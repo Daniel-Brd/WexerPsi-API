@@ -1,21 +1,22 @@
 import mongoose from "mongoose";
 
-const url = process.env.DATABASE_URL as string;
+const mongoUrl = process.env.DATABASE_URL as string;
 
-export function connectDatabase() {
+export function intializeClient() {
   mongoose.connection
-    .on("open", () => {
-      console.log("Connection to Mongo established.");
-    })
     .on("close", () => {
-      console.log("Connection to Mongo closed.");
+      console.log("Connection to Mongo has beem closed");
     })
     .on("error", (err) => {
-      console.log("ERROR: Failed to establish connection with Mongo", err);
+      console.error("ERROR: Failed to connect to Mongo", err);
+    })
+    .once("open", () => {
+      console.log("Connection to Mongo established successfully.");
     });
-  mongoose.connect(url);
+
+  mongoose.connect(mongoUrl);
 }
 
-export function disconnectDatabase() {
+export function closeClient() {
   mongoose.disconnect();
 }
