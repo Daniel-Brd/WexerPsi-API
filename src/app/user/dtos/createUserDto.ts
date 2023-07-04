@@ -13,3 +13,7 @@ export interface CreateUserServiceDTO {
   patients: string;
   // file: string;
 }
+
+export interface FindUserByEmailDTO {
+  email: string;
+}
