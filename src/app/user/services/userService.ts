@@ -1,5 +1,5 @@
 import { hashSync } from "bcrypt";
-import { CreateUserServiceDTO } from "../dtos/createUserDto";
+import { CreateUserServiceDTO, FindUserByEmailDTO } from "../dtos/createUserDto";
 import { UserRepository } from "../repositories/userRepository";
 
 export class UserService {
@@ -18,5 +18,15 @@ export class UserService {
     };
 
     return this.repository.create(payload);
+  }
+
+  async findByEmail(body: FindUserByEmailDTO) {
+    const result = await this.repository.findByEmail(body.email);
+
+    if (!result) {
+      return { error: true, message: "E-mail not found", status: 404 };
+    }
+
+    return result;
   }
 }
