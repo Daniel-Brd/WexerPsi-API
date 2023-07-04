@@ -3,5 +3,13 @@ export interface CreateUserDTO {
   email: string;
   password: string;
   patients: string;
-  file: string;
+  // file: string;
+}
+
+export interface CreateUserServiceDTO {
+  name: string;
+  email: string;
+  password: string;
+  patients: string;
+  // file: string;
 }
