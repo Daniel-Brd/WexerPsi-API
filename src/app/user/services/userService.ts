@@ -29,4 +29,14 @@ export class UserService {
 
     return result;
   }
+
+  async deleteById(id: string) {
+    const result = await this.repository.deleteById(id);
+
+    if (!result) {
+      return { error: true, message: "User not found", status: 404 };
+    }
+
+    return result;
+  }
 }
