@@ -14,7 +14,7 @@ export class UserController {
       return res.status(400).json({ errors: err.errors });
     }
 
-    const result = this.service.create(body) as any;
+    const result = (await this.service.create(body)) as any;
 
     if ("error" in result) {
       return res.status(result.status).json(result);
