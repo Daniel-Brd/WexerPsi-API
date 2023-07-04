@@ -40,4 +40,18 @@ export class UserController {
 
     return res.status(200).json(result);
   }
+
+  async deleteById(req: Request, res: Response) {
+    const {
+      params: { id },
+    } = req;
+
+    const result = await this.service.deleteById(id);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    return res.status(200).json(result);
+  }
 }
