@@ -11,4 +11,8 @@ export class UserRepository {
   async findByEmail(email: string) {
     return this.model.findOne({ email });
   }
+
+  async deleteById(id: string) {
+    return this.model.findByIdAndDelete(id);
+  }
 }
