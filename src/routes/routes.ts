@@ -1,9 +1,16 @@
 import { Router } from "express";
-import { userModule } from "../app/user/userModule";
+import { UserModule } from "../app/user/userModule";
+import { AuthModule } from "../app/auth/authModule";
+import { EnsureAuth } from "../common/middleares/ensureAuth";
 
 export const router = Router();
 
-const userController = userModule.build().controller;
+const userController = UserModule.build().controller;
+const authController = AuthModule.build().controller;
 
 router.post("/user", userController.create.bind(userController));
+router.post("/login", authController.login.bind(authController));
+
+router.use(EnsureAuth.ensureAuth);
+
 router.delete("/user/:id", userController.deleteById.bind(userController));
