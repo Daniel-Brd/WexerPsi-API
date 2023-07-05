@@ -9,7 +9,7 @@ export class UserRepository {
   }
 
   async findByEmail(email: string) {
-    return this.model.findOne({ email });
+    return this.model.findOne({ email }).select("+password");
   }
 
   async deleteById(id: string) {
