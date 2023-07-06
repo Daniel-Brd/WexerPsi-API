@@ -1,5 +1,5 @@
 import { hashSync } from "bcrypt";
-import { CreateUserServiceDTO, FindUserByEmailDTO } from "../dtos/createUserDto";
+import { CreateUserServiceDTO, FindUserByEmailDTO, UpdateUserDTO } from "../dtos/createUserDto";
 import { UserRepository } from "../repositories/userRepository";
 
 export class UserService {
@@ -32,6 +32,22 @@ export class UserService {
 
   async deleteById(id: string) {
     const result = await this.repository.deleteById(id);
+
+    if (!result) {
+      return { error: true, message: "User not found", status: 404 };
+    }
+
+    return result;
+  }
+
+  async updateById(id: string, body: UpdateUserDTO) {
+    let payload = body;
+
+    if (body.password) {
+      payload = { ...body, password: hashSync(body.password, 8) };
+    }
+
+    const result = await this.repository.updateById(id, payload);
 
     if (!result) {
       return { error: true, message: "User not found", status: 404 };

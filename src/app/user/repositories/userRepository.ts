@@ -1,4 +1,4 @@
-import { CreateUserDTO } from "../dtos/createUserDto";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/createUserDto";
 import { User } from "../models/user";
 
 export class UserRepository {
@@ -14,5 +14,9 @@ export class UserRepository {
 
   async deleteById(id: string) {
     return this.model.findByIdAndDelete(id);
+  }
+
+  async updateById(id: string, payload: UpdateUserDTO) {
+    return this.model.findByIdAndUpdate(id, { ...payload }, { new: true }).select("+password");
   }
 }

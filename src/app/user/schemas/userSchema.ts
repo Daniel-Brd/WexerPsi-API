@@ -21,3 +21,15 @@ export const makeFindByEmailUserSchema = () => {
     .noUnknown()
     .strict();
 };
+
+export const makeUpdateUserSchema = () => {
+  return yup
+    .object()
+    .shape({
+      name: yup.string(),
+      email: yup.string().email(),
+      password: yup.string(),
+    })
+    .noUnknown()
+    .strict();
+};

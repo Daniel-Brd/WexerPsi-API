@@ -17,3 +17,11 @@ export interface CreateUserServiceDTO {
 export interface FindUserByEmailDTO {
   email: string;
 }
+
+export interface UpdateUserDTO {
+  name?: string;
+  email?: string;
+  password?: string;
+  patients?: string;
+  // file?: string;
+}

@@ -13,4 +13,5 @@ router.post("/login", authController.login.bind(authController));
 
 router.use(EnsureAuth.ensureAuth);
 
+router.patch("/user/:id", userController.updateById.bind(userController));
 router.delete("/user/:id", userController.deleteById.bind(userController));
