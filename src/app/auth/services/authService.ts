@@ -14,8 +14,6 @@ export class AuthService {
       return { error: true, message: "Invalid e-mail or password", status: 400 };
     }
 
-    console.log(user.password);
-
     const isPasswordValid = compareSync(body.password, user.password);
 
     if (!isPasswordValid) {
