@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { makeCreateUserSchema, makeFindByEmailUserSchema } from "../schemas/userSchema";
+import {
+  makeCreateUserSchema,
+  makeFindByEmailUserSchema,
+  makeUpdateUserSchema,
+} from "../schemas/userSchema";
 import { UserService } from "../services/userService";
 
 export class UserController {
@@ -47,6 +51,27 @@ export class UserController {
     } = req;
 
     const result = await this.service.deleteById(id);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    return res.status(200).json(result);
+  }
+
+  async updateById(req: Request, res: Response) {
+    const {
+      params: { id },
+      body,
+    } = req;
+
+    try {
+      await makeUpdateUserSchema().validate(body);
+    } catch (err: any) {
+      return res.status(400).json({ errors: err.errors });
+    }
+
+    const result = await this.service.updateById(id, body);
 
     if ("error" in result) {
       return res.status(result.status).json(result);
