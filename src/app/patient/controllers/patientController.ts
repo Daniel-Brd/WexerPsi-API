@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PatientService } from "../services/patientService";
 import { makeCreatePatientSchema } from "../schemas/patientSchema";
-import { createPatientServiceDto } from "../dtos/createPatientServiceDto";
+import { CreatePatientServiceDto } from "../dtos/createPatientServiceDto";
 
 export class PatientController {
   constructor(private service: PatientService) {}
