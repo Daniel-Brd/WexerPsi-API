@@ -21,4 +21,8 @@ export class PatientRepository {
     const result = this.model.find({ user: userId });
     return result;
   }
+
+  async getPatientById(id: string) {
+    return this.model.findById(id);
+  }
 }
