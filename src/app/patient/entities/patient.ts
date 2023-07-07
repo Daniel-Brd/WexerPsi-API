@@ -1,15 +1,16 @@
-import mongoose, { SchemaTypes } from "mongoose";
+import mongoose from "mongoose";
 
 const PatientSchema = new mongoose.Schema(
   {
+    user: { type: mongoose.SchemaTypes.ObjectId, required: true },
+    timelines: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Timeline", required: true }],
     name: { type: String, required: true },
     birthdate: { type: Date, required: true },
     contact: { type: String, required: true },
-    demands: { type: String, required: true },
-    personalAnnotations: { type: String, required: true },
-    timelines: [{ type: mongoose.SchemaTypes.ObjectId, ref: "File" }],
+    demands: { type: String },
+    personalAnnotations: { type: String },
   },
   { timestamps: true }
 );
 
-export const patient = mongoose.model("Patient", PatientSchema);
+export const Patient = mongoose.model("Patient", PatientSchema);
