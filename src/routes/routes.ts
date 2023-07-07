@@ -29,3 +29,7 @@ router.get(
   "/patient/:id",
   patientController.getPatientById.bind(patientController)
 );
+router.patch(
+  "/patient/:id",
+  patientController.updatePatient.bind(patientController)
+);
