@@ -1,4 +1,4 @@
-import { CreatePatientDTO } from "./createPatientDTO";
+import { CreatePatientDTO } from "./createPatientDto";
 
 export class CreatePatientServiceDTO {
   body: CreatePatientDTO;

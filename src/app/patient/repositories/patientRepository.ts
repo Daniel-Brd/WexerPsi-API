@@ -1,5 +1,5 @@
-import { CreatePatientDTO } from "../dtos/createPatientDTO";
-import { GetPatientByUserDTO } from "../dtos/getPatientByUserDTO";
+import { CreatePatientDTO } from "../dtos/createPatientDto";
+import { GetPatientByUserDTO } from "../dtos/getPatientByUserDto";
 import { Patient } from "../models/patient";
 
 export class PatientRepository {
@@ -10,7 +10,7 @@ export class PatientRepository {
     return result;
   }
 
-  async getPatientByUser(userId: GetPatientByUser) {
+  async getPatientByUser(userId: GetPatientByUserDTO) {
     const result = this.model.find({ user: userId });
   }
 }

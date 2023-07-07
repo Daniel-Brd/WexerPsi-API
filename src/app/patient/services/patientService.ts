@@ -1,5 +1,5 @@
 import { UserRepository } from "../../user/repositories/userRepository";
-import { CreatePatientServiceDTO } from "../dtos/createPatientServiceDTO";
+import { CreatePatientServiceDTO } from "../dtos/createPatientServiceDto";
 import { PatientRepository } from "../repositories/patientRepository";
 
 export class PatientService {

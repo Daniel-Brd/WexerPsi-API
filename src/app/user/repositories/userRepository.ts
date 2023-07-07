@@ -1,4 +1,4 @@
-import { CreateUserDTO, UpdateUserDTO } from "../dtos/createUserDTO";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/createUserDto";
 import { User } from "../models/user";
 
 export class UserRepository {
