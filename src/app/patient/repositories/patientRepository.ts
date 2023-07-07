@@ -1,5 +1,6 @@
 import { UserRepository } from "../../user/repositories/userRepository";
 import { CreatePatientDTO } from "../dtos/createPatientDto";
+import { UpdatePatientDTO } from "../dtos/updatePatientDto";
 import { Patient } from "../models/patient";
 
 export class PatientRepository {
@@ -24,5 +25,9 @@ export class PatientRepository {
 
   async getPatientById(id: string) {
     return this.model.findById(id);
+  }
+
+  async updatePatient(id: string, payload: UpdatePatientDTO) {
+    return this.model.findByIdAndUpdate(id, payload, { new: true });
   }
 }
