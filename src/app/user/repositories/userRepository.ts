@@ -12,6 +12,10 @@ export class UserRepository {
     return this.model.findOne({ email }).select("+password");
   }
 
+  async findById(id: string) {
+    return this.model.findById(id);
+  }
+
   async deleteById(id: string) {
     return this.model.findByIdAndDelete(id);
   }
