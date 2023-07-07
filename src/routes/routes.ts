@@ -18,3 +18,4 @@ router.use(EnsureAuth.ensureAuth);
 router.patch("/user/:id", userController.updateById.bind(userController));
 router.delete("/user/:id", userController.deleteById.bind(userController));
 router.post("/user/:id/patient", patientController.create.bind(patientController));
+router.get("/user/:id/patient", patientController.getPatientByUser.bind(patientController));
