@@ -2,7 +2,7 @@ import { compareSync } from "bcrypt";
 import * as JWT from "jsonwebtoken";
 
 import { UserRepository } from "../../user/repositories/userRepository";
-import { LoginDTO } from "../dtos/loginDTO";
+import { LoginDTO } from "../dtos/loginDto";
 
 export class AuthService {
   constructor(private repository: UserRepository) {}
