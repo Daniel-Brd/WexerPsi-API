@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PatientService } from "../services/patientService";
-import { makeCreatePatientSchema } from "../schemas/patientSchema";
+import { makeCreatePatientSchema } from "../schemas/createPatientSchema";
+import { makeUpdatePatientSchema } from "../schemas/updatePatientSchema";
 
 export class PatientController {
   constructor(private service: PatientService) {}
@@ -46,6 +47,27 @@ export class PatientController {
     } = req;
 
     const result = (await this.service.getPatientById(id)) as any;
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    return res.status(200).json(result);
+  }
+
+  async updatePatient(req: Request, res: Response) {
+    const {
+      params: { id },
+      body,
+    } = req;
+
+    try {
+      await makeUpdatePatientSchema().validate(body);
+    } catch (err: any) {
+      return res.status(400).json({ error: err.errors });
+    }
+
+    const result = (await this.service.updatePatient(id, body)) as any;
 
     if ("error" in result) {
       return res.status(result.status).json(result);
