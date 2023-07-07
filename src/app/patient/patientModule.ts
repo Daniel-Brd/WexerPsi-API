@@ -7,8 +7,8 @@ import { PatientService } from "./services/patientService";
 
 export class PatientModule {
   static build() {
-    const repository = new PatientRepository(Patient);
     const userRepository = new UserRepository(User);
+    const repository = new PatientRepository(Patient, userRepository);
     const service = new PatientService(repository, userRepository);
     const controller = new PatientController(service);
     return { repository, userRepository, service, controller };
