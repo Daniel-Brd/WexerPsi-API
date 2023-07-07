@@ -1,3 +1,4 @@
+import mongoose, { ObjectId } from "mongoose";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/createUserDto";
 import { User } from "../models/user";
 
@@ -9,7 +10,10 @@ export class UserRepository {
   }
 
   async findByEmail(email: string) {
-    return this.model.findOne({ email }).select("+password");
+    return this.model
+      .findOne({ email })
+      .select("+password")
+      .populate("patients");
   }
 
   async findById(id: string) {
@@ -21,6 +25,12 @@ export class UserRepository {
   }
 
   async updateById(id: string, payload: UpdateUserDTO) {
-    return this.model.findByIdAndUpdate(id, { ...payload }, { new: true }).select("+password");
+    return this.model.findByIdAndUpdate(id, { ...payload }, { new: true });
+  }
+
+  async associatePatient(id: string, patientId: string) {
+    return this.model.findByIdAndUpdate(id, {
+      $push: { patients: [patientId] },
+    });
   }
 }
