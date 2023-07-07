@@ -25,4 +25,18 @@ export class PatientController {
 
     return res.status(200).json(result);
   }
+
+  async getPatientByUser(req: Request, res: Response) {
+    const {
+      params: { id: userId },
+    } = req;
+
+    const result = await this.service.getPatientByUser(userId);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    return res.status(200).json(result);
+  }
 }
