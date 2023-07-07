@@ -23,4 +23,18 @@ export class PatientService {
       return { error: true, message: "Internal server error", status: 500 };
     }
   }
+
+  async getPatientByUser(userId: string) {
+    const isUserValid = await this.userRepositpry.findById(userId);
+
+    if (!isUserValid) {
+      return { error: true, message: "User not found", status: 404 };
+    }
+
+    try {
+      return this.repository.getPatientByUser(userId);
+    } catch (err) {
+      return { error: true, message: "Internal server error", status: 500 };
+    }
+  }
 }
