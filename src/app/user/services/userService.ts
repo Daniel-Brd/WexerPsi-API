@@ -1,5 +1,9 @@
 import { hashSync } from "bcrypt";
-import { CreateUserServiceDTO, FindUserByEmailDTO, UpdateUserDTO } from "../dtos/createUserDto";
+import {
+  CreateUserServiceDTO,
+  FindUserByEmailDTO,
+  UpdateUserDTO,
+} from "../dtos/createUserDto";
 import { UserRepository } from "../repositories/userRepository";
 
 export class UserService {
@@ -41,6 +45,10 @@ export class UserService {
   }
 
   async updateById(id: string, body: UpdateUserDTO) {
+    if (!Boolean(Object.keys(body).length)) {
+      return { error: true, message: "Empty body", status: 400 };
+    }
+
     let payload = body;
 
     if (body.password) {
