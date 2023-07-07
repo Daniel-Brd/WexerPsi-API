@@ -29,6 +29,7 @@ export const makeUpdateUserSchema = () => {
       name: yup.string(),
       email: yup.string().email(),
       password: yup.string(),
+      patients: yup.string(),
     })
     .noUnknown()
     .strict();
