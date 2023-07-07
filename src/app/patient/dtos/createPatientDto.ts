@@ -1,4 +1,4 @@
-export class CreatePatientDto {
+export class CreatePatientDTO {
   name: String;
   birthdate: Date;
   contact: String;

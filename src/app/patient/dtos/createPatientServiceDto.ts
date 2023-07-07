@@ -1,6 +1,6 @@
-import { CreatePatientDto } from "./createPatientDto";
+import { CreatePatientDTO } from "./createPatientDTO";
 
-export class CreatePatientServiceDto {
-  body: CreatePatientDto;
+export class CreatePatientServiceDTO {
+  body: CreatePatientDTO;
   userId: string;
 }

@@ -1,11 +1,11 @@
 import { UserRepository } from "../../user/repositories/userRepository";
-import { CreatePatientServiceDto } from "../dtos/createPatientServiceDto";
+import { CreatePatientServiceDTO } from "../dtos/createPatientServiceDTO";
 import { PatientRepository } from "../repositories/patientRepository";
 
 export class PatientService {
   constructor(private repository: PatientRepository, private userRepositpry: UserRepository) {}
 
-  async create({ body, userId }: CreatePatientServiceDto) {
+  async create({ body, userId }: CreatePatientServiceDTO) {
     const payload = {
       user: userId,
       ...body,

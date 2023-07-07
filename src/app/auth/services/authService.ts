@@ -2,12 +2,12 @@ import { compareSync } from "bcrypt";
 import * as JWT from "jsonwebtoken";
 
 import { UserRepository } from "../../user/repositories/userRepository";
-import { LoginDto } from "../dtos/loginDto";
+import { LoginDTO } from "../dtos/loginDTO";
 
 export class AuthService {
   constructor(private repository: UserRepository) {}
 
-  async login(body: LoginDto) {
+  async login(body: LoginDTO) {
     const user = await this.repository.findByEmail(body.email);
 
     if (!user) {

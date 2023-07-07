@@ -1,5 +1,5 @@
 import { hashSync } from "bcrypt";
-import { CreateUserServiceDTO, FindUserByEmailDTO, UpdateUserDTO } from "../dtos/createUserDto";
+import { CreateUserServiceDTO, FindUserByEmailDTO, UpdateUserDTO } from "../dtos/createUserDTO";
 import { UserRepository } from "../repositories/userRepository";
 
 export class UserService {
