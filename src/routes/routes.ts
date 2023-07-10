@@ -24,3 +24,8 @@ router.get("/users/:id/patients", patientController.getPatientByUser.bind(patien
 router.get("/patients/:id", patientController.getPatientById.bind(patientController));
 router.patch("/patients/:id", patientController.updatePatient.bind(patientController));
 router.post("/patients/:id/timelines", timelineController.create.bind(timelineController));
+
+router.get(
+  "/patients/:id/timelines",
+  patientController.getAllPatientTimelines.bind(patientController)
+);
