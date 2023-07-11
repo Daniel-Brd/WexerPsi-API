@@ -11,4 +11,8 @@ export class TimelineRepository {
 
     return result;
   }
+
+  async getTimelineById(id: string) {
+    return await this.model.findById(id);
+  }
 }
