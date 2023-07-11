@@ -17,4 +17,14 @@ export class TimelineService {
       return { error: true, message: "Internal server error", status: 500 };
     }
   }
+
+  async getTimelineById(id: string) {
+    const timeline = await this.repository.getTimelineById(id);
+
+    if (!timeline) {
+      return { error: true, message: "Timeline not found", status: 404 };
+    }
+
+    return timeline;
+  }
 }
