@@ -31,3 +31,4 @@ router.get(
   patientController.getTimelinesByPatient.bind(patientController)
 );
 router.get("/timelines/:id", timelineController.getTimelineById.bind(timelineController));
+router.patch("/timelines/:id", timelineController.updateTimeline.bind(timelineController));
