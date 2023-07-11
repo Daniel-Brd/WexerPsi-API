@@ -14,7 +14,7 @@ export class TimelineRepository {
   }
 
   async getTimelineById(id: string) {
-    return await this.model.findById(id);
+    return await this.model.findById(id).populate("occurrences");
   }
 
   async updateTimeline(id: string, payload: UpdateTimelineDTO) {
