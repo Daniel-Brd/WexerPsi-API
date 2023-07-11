@@ -16,6 +16,20 @@ export class TimelineController {
       return res.status(result.status).json(result);
     }
 
+    res.status(201).json(result);
+  }
+
+  async getTimelineById(req: Request, res: Response) {
+    const {
+      params: { id },
+    } = req;
+
+    const result = await this.service.getTimelineById(id);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
     res.status(200).json(result);
   }
 }
