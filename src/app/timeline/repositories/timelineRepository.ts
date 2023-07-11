@@ -20,4 +20,10 @@ export class TimelineRepository {
   async updateTimeline(id: string, payload: UpdateTimelineDTO) {
     return await this.model.findByIdAndUpdate(id, payload, { new: true });
   }
+
+  async associateOccurrence(id: string, occurrenceId: string) {
+    return await this.model.findByIdAndUpdate(id, {
+      $push: { occurrences: [occurrenceId] },
+    });
+  }
 }
