@@ -1,5 +1,6 @@
 import { PatientRepository } from "../../patient/repositories/patientRepository";
 import { CreateTimelineDto } from "../dtos/createTimelineDto";
+import { UpdateTimelineDTO } from "../dtos/updateTimelineDto";
 import { Timeline } from "../models/timeline";
 
 export class TimelineRepository {
@@ -14,5 +15,9 @@ export class TimelineRepository {
 
   async getTimelineById(id: string) {
     return await this.model.findById(id);
+  }
+
+  async updateTimeline(id: string, payload: UpdateTimelineDTO) {
+    return await this.model.findByIdAndUpdate(id, payload, { new: true });
   }
 }
