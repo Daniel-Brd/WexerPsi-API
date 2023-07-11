@@ -76,12 +76,12 @@ export class PatientController {
     return res.status(200).json(result);
   }
 
-  async getAllPatientTimelines(req: Request, res: Response) {
+  async getTimelinesByPatient(req: Request, res: Response) {
     const {
       params: { id },
     } = req;
 
-    const result = (await this.service.getAllPatientTimelines(id)) as any;
+    const result = (await this.service.getTimelinesByPatient(id)) as any;
 
     if ("error" in result) {
       return res.status(result.status).json(result);

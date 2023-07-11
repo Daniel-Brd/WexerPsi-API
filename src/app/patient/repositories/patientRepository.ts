@@ -31,7 +31,7 @@ export class PatientRepository {
     });
   }
 
-  async getAllPatientTimelines(id: string) {
+  async getTimelinesByPatient(id: string) {
     return this.model.findById(id).populate("timelines");
   }
 }

@@ -28,6 +28,6 @@ router.patch("/patients/:id", patientController.updatePatient.bind(patientContro
 router.post("/patients/:id/timelines", timelineController.create.bind(timelineController));
 router.get(
   "/patients/:id/timelines",
-  patientController.getAllPatientTimelines.bind(patientController)
+  patientController.getTimelinesByPatient.bind(patientController)
 );
 router.get("/timelines/:id", timelineController.getTimelineById.bind(timelineController));

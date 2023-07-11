@@ -65,7 +65,7 @@ export class PatientService {
     }
   }
 
-  async getAllPatientTimelines(id: string) {
+  async getTimelinesByPatient(id: string) {
     const isPatientValid = await this.getPatientById(id);
 
     if (!isPatientValid) {
@@ -73,7 +73,7 @@ export class PatientService {
     }
 
     try {
-      const result = await this.repository.getAllPatientTimelines(id);
+      const result = await this.repository.getTimelinesByPatient(id);
       return result?.timelines;
     } catch (err) {
       return { error: true, message: "Internal server error", status: 500 };
