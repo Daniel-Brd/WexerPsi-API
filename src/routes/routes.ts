@@ -4,6 +4,7 @@ import { AuthModule } from "../app/auth/authModule";
 import { EnsureAuth } from "../common/middleares/ensureAuth";
 import { PatientModule } from "../app/patient/patientModule";
 import { TimelineModule } from "../app/timeline/timelineModule";
+import { OccurenceModule } from "../app/occurrence/occurrenceModule";
 
 export const router = Router();
 
@@ -11,6 +12,7 @@ const userController = UserModule.build().controller;
 const authController = AuthModule.build().controller;
 const patientController = PatientModule.build().controller;
 const timelineController = TimelineModule.build().controller;
+const occurrenceController = OccurenceModule.build().controller;
 
 router.post("/users", userController.create.bind(userController));
 router.post("/login", authController.login.bind(authController));
@@ -32,3 +34,5 @@ router.get(
 );
 router.get("/timelines/:id", timelineController.getTimelineById.bind(timelineController));
 router.patch("/timelines/:id", timelineController.updateTimeline.bind(timelineController));
+
+router.post("/timelines/:id/occurrences", occurrenceController.create.bind(occurrenceController));
