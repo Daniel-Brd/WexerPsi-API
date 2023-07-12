@@ -30,8 +30,4 @@ export class PatientRepository {
       $push: { timelines: [timelineId] },
     });
   }
-
-  async getTimelinesByPatient(id: string) {
-    return this.model.findById(id).populate("timelines");
-  }
 }

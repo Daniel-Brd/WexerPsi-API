@@ -75,7 +75,7 @@ export class PatientService {
     }
 
     try {
-      const result = await this.repository.getTimelinesByPatient(id);
+      const result = await this.repository.getPatientById(id);
       return result?.timelines;
     } catch (err) {
       return { error: true, message: "Internal server error", status: 500 };
