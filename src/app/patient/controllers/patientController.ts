@@ -46,7 +46,7 @@ export class PatientController {
       params: { id },
     } = req;
 
-    const result = (await this.service.getPatientById(id)) as any;
+    const result = await this.service.getPatientById(id);
 
     if ("error" in result) {
       return res.status(result.status).json(result);

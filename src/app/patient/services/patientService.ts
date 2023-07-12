@@ -40,11 +40,13 @@ export class PatientService {
   }
 
   async getPatientById(id: string) {
-    try {
-      return this.repository.getPatientById(id);
-    } catch (err) {
+    const result = await this.repository.getPatientById(id);
+
+    if (!result) {
       return { error: true, message: "Patient not found", status: 404 };
     }
+
+    return result;
   }
 
   async updatePatient(id: string, body: UpdatePatientDTO) {
