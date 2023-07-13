@@ -11,4 +11,8 @@ export class OccurrenceRepository {
 
     return result;
   }
+
+  async getOccurrenceById(id: string) {
+    return await this.model.findById(id);
+  }
 }
