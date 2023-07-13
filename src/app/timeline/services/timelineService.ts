@@ -35,12 +35,29 @@ export class TimelineService {
       return { error: true, message: "Empty body", status: 400 };
     }
 
-    if (!isTimelineValid) {
+    if ("error" in isTimelineValid) {
       return { error: true, message: "Timeline not found", status: 404 };
     }
 
     try {
       return this.repository.updateTimeline(id, body);
+    } catch (err) {
+      return { error: true, message: "Internal server error", status: 500 };
+    }
+  }
+
+  async getOccurrencesByTimeline(id: string) {
+    const isTimelineValid = await this.getTimelineById(id);
+
+    if ("error" in isTimelineValid) {
+      return isTimelineValid;
+    }
+
+    try {
+      const result = await this.repository.getTimelineById(id);
+      return result?.occurrences
+        ? result.occurrences
+        : { error: true, message: "Occurrences not found", status: 404 };
     } catch (err) {
       return { error: true, message: "Internal server error", status: 500 };
     }
