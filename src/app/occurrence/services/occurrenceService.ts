@@ -1,11 +1,12 @@
 import { TimelineService } from "../../timeline/services/timelineService";
-import { createOccurenceServiceDto } from "../dtos/createOccurrenceServiceDto";
+import { CreateOccurenceServiceDto } from "../dtos/createOccurrenceServiceDto";
+import { UpdateOccurenceDto } from "../dtos/updateOccurrenceDto";
 import { OccurrenceRepository } from "../repositories/occurrenceRepository";
 
 export class OccurrenceService {
   constructor(private repository: OccurrenceRepository, private timelineService: TimelineService) {}
 
-  async create(body: createOccurenceServiceDto, timelineId: string) {
+  async create(body: CreateOccurenceServiceDto, timelineId: string) {
     const payload = {
       timelineId,
       ...body,
@@ -36,5 +37,24 @@ export class OccurrenceService {
     }
 
     return result;
+  }
+
+  async updateOccurrence(id: string, payload: UpdateOccurenceDto) {
+    const occurrence = await this.getOccurrenceById(id);
+
+    if (!Boolean(Object.keys(payload).length)) {
+      return { error: true, message: "Empty body", status: 400 };
+    }
+
+    if ("error" in occurrence) {
+      return occurrence;
+    }
+
+    try {
+      const result = await this.repository.updateOccurrence(id, payload);
+      return result ? result : { error: true, message: "Internal server error", status: 500 };
+    } catch (err) {
+      return { error: true, message: "Internal server error", status: 500 };
+    }
   }
 }
