@@ -27,4 +27,14 @@ export class OccurrenceService {
       return { error: true, message: " Internal server error", status: 500 };
     }
   }
+
+  async getOccurrenceById(id: string) {
+    const result = await this.repository.getOccurrenceById(id);
+
+    if (!result) {
+      return { error: true, message: "Occurrence not found", status: 404 };
+    }
+
+    return result;
+  }
 }
