@@ -25,4 +25,18 @@ export class OccurrenceController {
 
     res.status(201).json(result);
   }
+
+  async getOccurrenceById(req: Request, res: Response) {
+    const {
+      params: { id },
+    } = req;
+
+    const result = await this.service.getOccurrenceById(id);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    return res.status(200).json(result);
+  }
 }
