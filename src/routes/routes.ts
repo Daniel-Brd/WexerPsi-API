@@ -41,3 +41,4 @@ router.get(
   timelineController.getOccurencesByTimeline.bind(timelineController)
 );
 router.get("/occurrences/:id", occurrenceController.getOccurrenceById.bind(occurrenceController));
+router.patch("/occurrences/:id", occurrenceController.updateOccurrence.bind(occurrenceController));
