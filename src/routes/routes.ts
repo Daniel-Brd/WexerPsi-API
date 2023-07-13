@@ -36,3 +36,7 @@ router.get("/timelines/:id", timelineController.getTimelineById.bind(timelineCon
 router.patch("/timelines/:id", timelineController.updateTimeline.bind(timelineController));
 
 router.post("/timelines/:id/occurrences", occurrenceController.create.bind(occurrenceController));
+router.get(
+  "/timelines/:id/occurrences",
+  timelineController.getOccurencesByTimeline.bind(timelineController)
+);
