@@ -54,4 +54,18 @@ export class TimelineController {
 
     res.status(200).json(result);
   }
+
+  async getOccurencesByTimeline(req: Request, res: Response) {
+    const {
+      params: { id: timelineId },
+    } = req;
+
+    const result = await this.service.getOccurrencesByTimeline(timelineId);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    res.status(200).json(result);
+  }
 }
