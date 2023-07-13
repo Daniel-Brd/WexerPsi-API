@@ -1,4 +1,4 @@
-export interface createOccurenceDto {
+export interface CreateOccurenceDto {
   timelineId: string;
   title: string;
   content: string;

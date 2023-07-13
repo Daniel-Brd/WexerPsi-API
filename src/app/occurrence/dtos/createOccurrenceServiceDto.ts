@@ -1,4 +1,4 @@
-export class createOccurenceServiceDto {
+export class CreateOccurenceServiceDto {
   title: string;
   content: string;
   kind: "Sessão" | "Fato Relevante";
