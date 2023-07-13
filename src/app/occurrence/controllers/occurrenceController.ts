@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { OccurrenceService } from "../services/occurrenceService";
 import { makeCreateOccurrenceSchema } from "../schemas/occurrenceSchema";
+import { makeUpdateOccurrenceSchema } from "../schemas/updateOccurrenceSchema";
 
 export class OccurrenceController {
   constructor(private service: OccurrenceService) {}
@@ -32,6 +33,27 @@ export class OccurrenceController {
     } = req;
 
     const result = await this.service.getOccurrenceById(id);
+
+    if ("error" in result) {
+      return res.status(result.status).json(result);
+    }
+
+    return res.status(200).json(result);
+  }
+
+  async updateOccurrence(req: Request, res: Response) {
+    const {
+      params: { id },
+      body,
+    } = req;
+
+    try {
+      await makeUpdateOccurrenceSchema().validate(body);
+    } catch (err: any) {
+      res.status(400).json({ error: err.errors });
+    }
+
+    const result = await this.service.updateOccurrence(id, body);
 
     if ("error" in result) {
       return res.status(result.status).json(result);
