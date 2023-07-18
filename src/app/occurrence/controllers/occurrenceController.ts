@@ -10,6 +10,7 @@ export class OccurrenceController {
     const {
       params: { id: timelineId },
       body,
+      files,
     } = req;
 
     try {
@@ -18,7 +19,9 @@ export class OccurrenceController {
       return res.status(400).json({ error: err.errors });
     }
 
-    const result = await this.service.create(body, timelineId);
+    const payload = files ? { ...body, files } : { ...body };
+
+    const result = await this.service.create(payload, timelineId);
 
     if ("error" in result) {
       return res.status(result.status).json(result);
@@ -45,6 +48,7 @@ export class OccurrenceController {
     const {
       params: { id },
       body,
+      files,
     } = req;
 
     try {
@@ -53,7 +57,9 @@ export class OccurrenceController {
       res.status(400).json({ error: err.errors });
     }
 
-    const result = await this.service.updateOccurrence(id, body);
+    const payload = files ? { ...body, files } : { ...body };
+
+    const result = await this.service.updateOccurrence(id, payload);
 
     if ("error" in result) {
       return res.status(result.status).json(result);
