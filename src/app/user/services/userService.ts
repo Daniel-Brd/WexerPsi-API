@@ -1,24 +1,28 @@
 import { hashSync } from "bcrypt";
-import {
-  CreateUserServiceDTO,
-  FindUserByEmailDTO,
-  UpdateUserDTO,
-} from "../dtos/createUserDto";
+import { CreateUserServiceDTO, FindUserByEmailDTO, UpdateUserDTO } from "../dtos/createUserDto";
 import { UserRepository } from "../repositories/userRepository";
+import { FileService } from "../../file/services/fileService";
 
 export class UserService {
-  constructor(private repository: UserRepository) {}
+  constructor(private repository: UserRepository, private fileService: FileService) {}
 
-  async create(body: CreateUserServiceDTO) {
-    const registeredEmail = await this.repository.findByEmail(body.email);
+  async create(params: CreateUserServiceDTO) {
+    const registeredEmail = await this.repository.findByEmail(params.email);
 
     if (registeredEmail) {
       return { error: true, message: "E-mail already registered", status: 400 };
     }
 
+    const photo = await this.fileService.create([params.file]);
+
+    if ("error" in photo) {
+      return { error: true, message: "Cannot upload photo", status: 400 };
+    }
+
     const payload = {
-      ...body,
-      password: hashSync(body.password, 8),
+      ...params,
+      password: hashSync(params.password, 8),
+      file: photo[0]._id,
     };
 
     return this.repository.create(payload);
@@ -44,16 +48,24 @@ export class UserService {
     return result;
   }
 
-  async updateById(id: string, body: UpdateUserDTO) {
-    if (!Boolean(Object.keys(body).length)) {
+  async updateById(id: string, params: UpdateUserDTO) {
+    if (!Boolean(Object.keys(params).length)) {
       return { error: true, message: "Empty body", status: 400 };
     }
 
-    let payload = body;
+    let payload = params;
 
-    if (body.password) {
-      payload = { ...body, password: hashSync(body.password, 8) };
+    if (params.password) {
+      payload = { ...params, password: hashSync(params.password, 8) };
     }
+
+    const photo = params.file ? await this.fileService.create([params.file]) : [];
+
+    if ("error" in photo) {
+      return { error: true, message: "Cannot upload photo", status: 400 };
+    }
+
+    payload = { ...payload, file: photo[0] };
 
     const result = await this.repository.updateById(id, payload);
 
