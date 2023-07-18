@@ -1,17 +1,17 @@
+import { FileService } from "../../file/services/fileService";
 import { TimelineService } from "../../timeline/services/timelineService";
 import { CreateOccurenceServiceDto } from "../dtos/createOccurrenceServiceDto";
-import { UpdateOccurenceDto } from "../dtos/updateOccurrenceDto";
+import { UpdateOccurenceServiceDto } from "../dtos/updateOccurrenceServiceDto";
 import { OccurrenceRepository } from "../repositories/occurrenceRepository";
 
 export class OccurrenceService {
-  constructor(private repository: OccurrenceRepository, private timelineService: TimelineService) {}
+  constructor(
+    private repository: OccurrenceRepository,
+    private timelineService: TimelineService,
+    private fileService: FileService
+  ) {}
 
-  async create(body: CreateOccurenceServiceDto, timelineId: string) {
-    const payload = {
-      timelineId,
-      ...body,
-    };
-
+  async create(params: CreateOccurenceServiceDto, timelineId: string) {
     const isTimelineValid = await this.timelineService.getTimelineById(timelineId);
 
     if (!isTimelineValid) {
@@ -21,6 +21,18 @@ export class OccurrenceService {
         status: 404,
       };
     }
+
+    const files = params.files ? await this.fileService.create(params.files) : [];
+
+    if ("error" in files) {
+      return { error: true, message: "Cannot upload files", status: 400 };
+    }
+
+    const payload = {
+      timelineId,
+      ...params,
+      files: files.map((file) => file._id.toString()),
+    };
 
     try {
       return await this.repository.create(payload);
@@ -39,16 +51,27 @@ export class OccurrenceService {
     return result;
   }
 
-  async updateOccurrence(id: string, payload: UpdateOccurenceDto) {
+  async updateOccurrence(id: string, params: UpdateOccurenceServiceDto) {
     const occurrence = await this.getOccurrenceById(id);
 
-    if (!Boolean(Object.keys(payload).length)) {
+    if (!Boolean(Object.keys(params).length)) {
       return { error: true, message: "Empty body", status: 400 };
     }
 
     if ("error" in occurrence) {
       return occurrence;
     }
+
+    const files = params.files ? await this.fileService.create(params.files) : [];
+
+    if ("error" in files) {
+      return { error: true, message: "Cannot upload files", status: 400 };
+    }
+
+    const payload = {
+      ...params,
+      files: files.map((file) => file._id.toString()),
+    };
 
     try {
       const result = await this.repository.updateOccurrence(id, payload);

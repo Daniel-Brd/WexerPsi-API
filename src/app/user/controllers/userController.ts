@@ -5,12 +5,13 @@ import {
   makeUpdateUserSchema,
 } from "../schemas/userSchema";
 import { UserService } from "../services/userService";
+import { log } from "console";
 
 export class UserController {
   constructor(private service: UserService) {}
 
   async create(req: Request, res: Response) {
-    const { body } = req;
+    const { body, file } = req;
 
     try {
       await makeCreateUserSchema().validate(body);
@@ -18,7 +19,15 @@ export class UserController {
       return res.status(400).json({ errors: err.errors });
     }
 
-    const result = (await this.service.create(body)) as any;
+    const payload = {
+      ...body,
+      file: {
+        filename: file?.filename,
+        mimetype: file?.mimetype,
+      },
+    };
+
+    const result = (await this.service.create(payload)) as any;
 
     if ("error" in result) {
       return res.status(result.status).json(result);
@@ -63,6 +72,7 @@ export class UserController {
     const {
       params: { id },
       body,
+      file,
     } = req;
 
     try {
@@ -71,7 +81,17 @@ export class UserController {
       return res.status(400).json({ errors: err.errors });
     }
 
-    const result = await this.service.updateById(id, body);
+    const payload = file
+      ? {
+          ...body,
+          file: {
+            filename: file?.filename,
+            mimetype: file?.mimetype,
+          },
+        }
+      : { ...body };
+
+    const result = await this.service.updateById(id, payload);
 
     if ("error" in result) {
       return res.status(result.status).json(result);

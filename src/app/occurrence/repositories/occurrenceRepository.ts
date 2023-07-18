@@ -7,7 +7,7 @@ export class OccurrenceRepository {
   constructor(private model: typeof Occurrence, private timelineRepository: TimelineRepository) {}
 
   async create(occurrence: CreateOccurenceDto) {
-    const result = await this.model.create(occurrence);
+    const result = await (await this.model.create(occurrence)).populate("files");
     this.timelineRepository.associateOccurrence(occurrence.timelineId, result._id.toString());
 
     return result;
@@ -18,6 +18,6 @@ export class OccurrenceRepository {
   }
 
   async updateOccurrence(id: string, payload: UpdateOccurenceDto) {
-    return await this.model.findByIdAndUpdate(id, payload, { new: true });
+    return await this.model.findByIdAndUpdate(id, payload, { new: true }).populate("files");
   }
 }

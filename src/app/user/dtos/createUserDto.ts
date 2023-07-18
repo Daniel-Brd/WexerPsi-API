@@ -1,9 +1,12 @@
+import { Types } from "mongoose";
+import { CreateFileDto } from "../../file/dtos/createFileDto";
+
 export interface CreateUserDTO {
   name: string;
   email: string;
   password: string;
   patients: string;
-  // file: string;
+  file: Types.ObjectId;
 }
 
 export interface CreateUserServiceDTO {
@@ -11,7 +14,7 @@ export interface CreateUserServiceDTO {
   email: string;
   password: string;
   patients: string;
-  // file: string;
+  file: CreateFileDto;
 }
 
 export interface FindUserByEmailDTO {
@@ -22,5 +25,5 @@ export interface UpdateUserDTO {
   name?: string;
   email?: string;
   password?: string;
-  // file?: string;
+  file?: CreateFileDto;
 }
