@@ -5,7 +5,7 @@ export interface CreateUserDTO {
   name: string;
   email: string;
   password: string;
-  patients: string;
+  patients?: string;
   file: Types.ObjectId;
 }
 
@@ -13,7 +13,7 @@ export interface CreateUserServiceDTO {
   name: string;
   email: string;
   password: string;
-  patients: string;
+  patients?: string;
   file: CreateFileDto;
 }
 
