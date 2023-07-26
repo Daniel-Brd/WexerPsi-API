@@ -5,7 +5,6 @@ import {
   makeUpdateUserSchema,
 } from "../schemas/userSchema";
 import { UserService } from "../services/userService";
-import { log } from "console";
 
 export class UserController {
   constructor(private service: UserService) {}
