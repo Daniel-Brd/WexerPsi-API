@@ -13,8 +13,7 @@ export class PatientRepository {
   }
 
   async getPatientByUser(userId: string) {
-    const result = this.model.find({ user: userId });
-    return result;
+    return this.model.find({ user: userId });
   }
 
   async getPatientById(id: string) {
