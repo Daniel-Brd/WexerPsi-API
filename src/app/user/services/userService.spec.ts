@@ -177,14 +177,14 @@ describe("UserService", () => {
     };
 
     it("should update a user by its id", async () => {
-      await mockedUserRepository.updateById.mockResolvedValue(payload);
+      await mockedUserRepository.updateById.mockResolvedValue({ ...mockedUser, ...payload });
       await mockedFileService.create.mockResolvedValue([{ ...payload.file, _id: "1" }]);
 
       bcryptHashSyncSpy.mockReturnValue(payload.password as never);
 
       const result = await sut.updateById(mockedUser._id, payload);
 
-      const expected = payload;
+      const expected = { ...mockedUser, ...payload };
 
       expect(result).toEqual(expected);
 
@@ -202,7 +202,7 @@ describe("UserService", () => {
     });
 
     it("should return an error if the payload is empty", async () => {
-      await mockedUserRepository.updateById.mockResolvedValue(payload);
+      await mockedUserRepository.updateById.mockResolvedValue({ ...mockedUser, ...payload });
       await mockedFileService.create.mockResolvedValue([{ ...payload.file, _id: "1" }]);
 
       const result = await sut.updateById(mockedUser._id, {});
