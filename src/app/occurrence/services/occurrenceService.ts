@@ -37,29 +37,27 @@ export class OccurrenceService {
     try {
       return await this.repository.create(payload);
     } catch (err) {
-      return { error: true, message: " Internal server error", status: 500 };
+      return { error: true, message: "Internal server error", status: 500 };
     }
   }
 
   async getOccurrenceById(id: string) {
-    const result = await this.repository.getOccurrenceById(id);
-
-    if (!result) {
+    try {
+      return await this.repository.getOccurrenceById(id);
+    } catch (err) {
       return { error: true, message: "Occurrence not found", status: 404 };
     }
-
-    return result;
   }
 
   async updateOccurrence(id: string, params: UpdateOccurenceServiceDto) {
-    const occurrence = await this.getOccurrenceById(id);
+    const occurrence = await this.repository.getOccurrenceById(id);
 
     if (!Boolean(Object.keys(params).length)) {
       return { error: true, message: "Empty body", status: 400 };
     }
 
-    if ("error" in occurrence) {
-      return occurrence;
+    if (!occurrence) {
+      return { error: true, message: "Occurrence not found", status: 404 };
     }
 
     const files = params.files ? await this.fileService.create(params.files) : [];
@@ -70,12 +68,10 @@ export class OccurrenceService {
 
     const payload = {
       ...params,
-      files: files.map((file) => file._id.toString()),
     };
 
     try {
-      const result = await this.repository.updateOccurrence(id, payload);
-      return result ? result : { error: true, message: "Internal server error", status: 500 };
+      return await this.repository.updateOccurrence(id, payload);
     } catch (err) {
       return { error: true, message: "Internal server error", status: 500 };
     }

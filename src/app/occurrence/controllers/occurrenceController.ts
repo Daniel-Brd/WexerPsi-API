@@ -37,8 +37,11 @@ export class OccurrenceController {
 
     const result = await this.service.getOccurrenceById(id);
 
-    if ("error" in result) {
-      return res.status(result.status).json(result);
+    if (result) {
+      if ("error" in result) {
+        return res.status(result.status).json(result);
+      }
+      return res.status(200).json(result);
     }
 
     return res.status(200).json(result);
@@ -61,10 +64,11 @@ export class OccurrenceController {
 
     const result = await this.service.updateOccurrence(id, payload);
 
-    if ("error" in result) {
-      return res.status(result.status).json(result);
+    if (result) {
+      if ("error" in result) {
+        return res.status(result.status).json(result);
+      }
+      return res.status(200).json(result);
     }
-
-    return res.status(200).json(result);
   }
 }
