@@ -48,6 +48,10 @@ export class PatientController {
 
     const result = await this.service.getPatientById(id);
 
+    if (!result) {
+      return res.status(500).json({ error: true, message: "internal server error" });
+    }
+
     if ("error" in result) {
       return res.status(result.status).json(result);
     }

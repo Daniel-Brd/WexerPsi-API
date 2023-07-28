@@ -3,6 +3,10 @@ import { UpdatePatientDTO } from "../dtos/updatePatientDto";
 import { PatientService } from "./patientService";
 
 describe("PatientService", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   const mockedPatientRepository = {
     create: jest.fn(),
     getPatientByUser: jest.fn(),
@@ -46,8 +50,8 @@ describe("PatientService", () => {
     };
 
     it("should create a patient associated with a user", async () => {
-      await mockedUserRepository.findById.mockResolvedValue(mockedUser);
-      await mockedPatientRepository.create.mockResolvedValue(payload);
+      jest.spyOn(mockedUserRepository, "findById").mockResolvedValueOnce(mockedUser);
+      jest.spyOn(mockedPatientRepository, "create").mockResolvedValueOnce(payload);
 
       const result = await sut.create(payload);
 
@@ -66,7 +70,7 @@ describe("PatientService", () => {
     });
 
     it("should return an error if the user is not found", async () => {
-      await mockedUserRepository.findById.mockResolvedValue(false);
+      jest.spyOn(mockedUserRepository, "findById").mockResolvedValueOnce(false);
 
       const result = await sut.create(payload);
 
@@ -74,13 +78,14 @@ describe("PatientService", () => {
 
       expect(result).toEqual(expected);
 
-      expect(mockedUserRepository.findById).toBeCalledTimes(2);
+      expect(mockedUserRepository.findById).toBeCalledTimes(1);
       expect(mockedUserRepository.findById).toBeCalledWith(payload.userId);
     });
 
     it("should return an error if there are an internal error in the repository", async () => {
-      await mockedUserRepository.findById.mockResolvedValue(mockedUser);
-      await mockedPatientRepository.create.mockResolvedValue(false);
+      jest.spyOn(mockedUserRepository, "findById").mockResolvedValueOnce(mockedUser);
+
+      jest.spyOn(mockedPatientRepository, "create").mockRejectedValue(new Error("err"));
 
       const result = await sut.create(payload);
 
@@ -102,9 +107,14 @@ describe("PatientService", () => {
   };
 
   describe("getPatientByUser", () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
     it("should return all patients of a user", async () => {
-      await mockedUserRepository.findById.mockResolvedValue(mockedUser);
-      await mockedPatientRepository.getPatientByUser.mockResolvedValue([mockedPatient]);
+      jest.spyOn(mockedUserRepository, "findById").mockResolvedValue(mockedPatient);
+
+      jest.spyOn(mockedPatientRepository, "getPatientByUser").mockResolvedValue([mockedPatient]);
 
       const result = await sut.getPatientByUser(mockedPatient.user);
 
@@ -112,7 +122,7 @@ describe("PatientService", () => {
 
       expect(result).toEqual(expected);
 
-      // expect(mockedUserRepository.findById).toBeCalledTimes(1);
+      expect(mockedUserRepository.findById).toBeCalledTimes(1);
       expect(mockedUserRepository.findById).toBeCalledWith(mockedPatient.user);
 
       expect(mockedPatientRepository.getPatientByUser).toBeCalledTimes(1);
@@ -120,7 +130,7 @@ describe("PatientService", () => {
     });
 
     it("should return a error if a user is no found", async () => {
-      await mockedUserRepository.findById.mockResolvedValue(false);
+      jest.spyOn(mockedUserRepository, "findById").mockResolvedValue(false);
 
       const result = await sut.getPatientByUser(mockedPatient.user);
 
@@ -130,8 +140,8 @@ describe("PatientService", () => {
     });
 
     it("should return an error if a patient is no found", async () => {
-      await mockedUserRepository.findById.mockResolvedValue(mockedUser);
-      await mockedPatientRepository.getPatientById.mockResolvedValue(false);
+      jest.spyOn(mockedUserRepository, "findById").mockResolvedValue(mockedUser);
+      jest.spyOn(mockedPatientRepository, "getPatientById").mockRejectedValue(new Error("err"));
 
       const result = await sut.getPatientById(mockedPatient.user);
 
@@ -150,11 +160,11 @@ describe("PatientService", () => {
       };
 
       it("should update a patient by its id", async () => {
-        await mockedPatientRepository.updatePatient.mockResolvedValue({
+        jest.spyOn(mockedPatientRepository, "updatePatient").mockResolvedValue({
           ...mockedPatient,
           ...payload,
         });
-        await mockedPatientRepository.getPatientById.mockResolvedValue(mockedPatient);
+        jest.spyOn(mockedPatientRepository, "getPatientById").mockResolvedValue(mockedPatient);
 
         const result = await sut.updatePatient(mockedPatient._id, payload);
 
@@ -165,12 +175,12 @@ describe("PatientService", () => {
         expect(mockedPatientRepository.updatePatient).toBeCalledTimes(1);
         expect(mockedPatientRepository.updatePatient).toBeCalledWith(mockedPatient._id, payload);
 
-        // expect(mockedPatientRepository.getPatientById).toBeCalledTimes(1);
+        expect(mockedPatientRepository.getPatientById).toBeCalledTimes(1);
         expect(mockedPatientRepository.getPatientById).toBeCalledWith(mockedPatient._id);
       });
 
       it("should return an error if the payload is empty", async () => {
-        await mockedPatientRepository.updatePatient.mockResolvedValue({
+        jest.spyOn(mockedPatientRepository, "updatePatient").mockResolvedValue({
           ...mockedPatient,
           ...payload,
         });
@@ -183,7 +193,7 @@ describe("PatientService", () => {
       });
 
       it("should return a error if a patient is no found", async () => {
-        await mockedPatientRepository.getPatientById.mockResolvedValue(false);
+        jest.spyOn(mockedPatientRepository, "getPatientById").mockResolvedValue(false);
 
         const result = await sut.updatePatient("invalidId", payload);
 
@@ -193,8 +203,9 @@ describe("PatientService", () => {
       });
 
       it("should return an error if there are an internal error in the repository", async () => {
-        await mockedPatientRepository.getPatientById.mockResolvedValue(mockedPatient);
-        await mockedPatientRepository.updatePatient.mockResolvedValue(false);
+        jest.spyOn(mockedPatientRepository, "getPatientById").mockResolvedValue(mockedPatient);
+
+        jest.spyOn(mockedPatientRepository, "updatePatient").mockRejectedValue(new Error("err"));
 
         const result = await sut.updatePatient(mockedPatient._id, payload);
 
@@ -206,7 +217,7 @@ describe("PatientService", () => {
 
     describe("getTimelinesByPatient", () => {
       it("should return all timelines of a patient", async () => {
-        await mockedPatientRepository.getPatientById.mockResolvedValue(mockedPatient);
+        jest.spyOn(mockedPatientRepository, "getPatientById").mockResolvedValue(mockedPatient);
 
         const result = await sut.getTimelinesByPatient(mockedPatient._id);
 
@@ -214,12 +225,12 @@ describe("PatientService", () => {
 
         expect(result).toEqual(expected);
 
-        // expect(mockedPatientRepository.getPatientById).toBeCalledTimes(1);
+        expect(mockedPatientRepository.getPatientById).toBeCalledTimes(2);
         expect(mockedPatientRepository.getPatientById).toBeCalledWith(mockedPatient._id);
       });
 
       it("should return a error if a patient is no found", async () => {
-        await mockedPatientRepository.getPatientById.mockResolvedValue(false);
+        jest.spyOn(mockedPatientRepository, "getPatientById").mockResolvedValue(false);
 
         const result = await sut.getTimelinesByPatient("invalidId");
 

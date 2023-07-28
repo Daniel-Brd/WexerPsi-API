@@ -18,12 +18,11 @@ export class PatientService {
       return { error: true, message: "User not found", status: 404 };
     }
 
-    const result = await this.repository.create(payload);
-
-    if (result) {
-      return result;
+    try {
+      return await this.repository.create(payload);
+    } catch (err) {
+      return { error: true, message: "Internal server error", status: 500 };
     }
-    return { error: true, message: "Internal server error", status: 500 };
   }
 
   async getPatientByUser(userId: string) {
@@ -41,16 +40,15 @@ export class PatientService {
   }
 
   async getPatientById(id: string) {
-    const result = await this.repository.getPatientById(id);
-
-    if (!result) {
+    try {
+      return await this.repository.getPatientById(id);
+    } catch (err) {
       return { error: true, message: "Patient not found", status: 404 };
     }
-    return result;
   }
 
   async updatePatient(id: string, body: UpdatePatientDTO) {
-    const patient = await this.repository.getPatientById(id);
+    const patient = await this.getPatientById(id);
 
     if (!Boolean(Object.keys(body).length)) {
       return { error: true, message: "Empty body", status: 400 };
@@ -60,26 +58,25 @@ export class PatientService {
       return { error: true, message: "Patient not found", status: 404 };
     }
 
-    const result = await this.repository.updatePatient(id, body);
-
-    if (result) {
-      return result;
+    try {
+      return await this.repository.updatePatient(id, body);
+    } catch (err) {
+      return { error: true, message: "Internal server error", status: 500 };
     }
-    return { error: true, message: "Internal server error", status: 500 };
   }
 
   async getTimelinesByPatient(id: string) {
-    const isPatientValid = await this.repository.getPatientById(id);
+    const isPatientValid = await this.getPatientById(id);
 
     if (!isPatientValid) {
       return { error: true, message: "Patient not found", status: 404 };
     }
 
-    const result = await this.repository.getPatientById(id);
-
-    if (result) {
-      return result.timelines;
+    try {
+      const result = await this.repository.getPatientById(id);
+      return result?.timelines;
+    } catch (err) {
+      return { error: true, message: "Internal server error", status: 500 };
     }
-    return { error: true, message: "Internal server error", status: 500 };
   }
 }
