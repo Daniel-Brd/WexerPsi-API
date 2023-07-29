@@ -6,7 +6,7 @@ export class FileService {
 
   async create(body: CreateFileDto[]) {
     try {
-      return this.repository.create(body);
+      return await this.repository.create(body);
     } catch (err) {
       return { error: true, message: "internal server error", status: 500 };
     }
