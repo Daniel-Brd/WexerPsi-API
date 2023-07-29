@@ -9,18 +9,18 @@ export class AuthService {
 
   async login(body: LoginDTO) {
     const user = await this.repository.findByEmail(body.email);
-
+    
     if (!user) {
       return { error: true, message: "Invalid e-mail or password", status: 400 };
     }
 
-    const isPasswordValid = compareSync(body.password, user.password);
+    const isPasswordValid = compareSync(body.password, user.password);        
 
     if (!isPasswordValid) {
       return { error: true, message: "Invalid e-mail or password", status: 400 };
-    }
+    }    
 
-    const payload = { id: user.id };
+    const payload = { id: user._id };
 
     const secretKey = process.env.JWT_SECRET_KEY as string;
 
@@ -28,8 +28,8 @@ export class AuthService {
 
     const token = JWT.sign(payload, secretKey, options);
 
-    const result = { token, user };
-
+    const result = { token, user };    
+    
     return result;
   }
 }
