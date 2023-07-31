@@ -55,7 +55,7 @@ The "User" entity represents the users of the system.
     "password": "***********",
     "patients": [
       "64ade415e74a64a236800fb1"
-    ]
+    ],
 		"file": "64b5ef00e46d467958e85034",
     "createdAt": "2021-05-17T18:30:00.000Z",
     "updatedAt": "2021-05-17T18:30:00.000Z"
